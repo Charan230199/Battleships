@@ -1,6 +1,6 @@
 """
 Battleship Project
-Name:
+Name: G.V.S. Sai Charan
 Roll No:
 """
 
@@ -62,7 +62,14 @@ Parameters: int ; int
 Returns: 2D list of ints
 '''
 def emptyGrid(rows, cols):
-    return
+    grid=[]
+    for i in range(rows):
+        col = []
+        for j in range(cols):
+            col.append(EMPTY_UNCLICKED)
+        grid.append(col)
+    return (grid)
+
 
 
 '''
@@ -71,7 +78,21 @@ Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    return
+    row = random.randint(1,8)
+    col = random.randint(1,8)
+    
+    col_or_row = random.randint(0,1)
+    
+    ship1=[]
+    
+    if col_or_row == 0:                    
+        for row in range(row-1, row+2):
+            ship1.append([row,col])
+    else:                                 
+        for col in range(col-1, col+2):
+            ship1.append([row,col])
+    return ship1 
+
 
 
 '''
@@ -80,7 +101,14 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
+    temp=0
+    for i in ship:
+        if grid[i[0]][i[1]] == 1:
+            temp+=1
+            if temp == 3:
+                return True
+        else:
+            return False
 
 
 '''
@@ -89,7 +117,16 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    return
+    temp=0
+    while temp < numShips:
+        ship2= createShip()
+        if checkShip(grid, ship2) == True:
+            for i in range(len(ship2)):
+                grid[ship2[i][0]][ship2[i][1]] =SHIP_UNCLICKED
+            temp+=1
+    return grid
+    
+
 
 
 '''
@@ -270,4 +307,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
+   # runSimulation(500, 500)
+   test.testAddShips()
