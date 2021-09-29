@@ -43,6 +43,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
+    userCanvas = drawGrid(data, userCanvas, data["User-board"], True)
+    compCanvas = drawGrid(data, compCanvas, data["computer"], True)
     return
 
 
@@ -144,6 +146,13 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    for row in range(data["rows"]):
+        for col in range(data["cols"]):
+            if grid[row][col] == SHIP_UNCLICKED:
+                canvas.create_rectangle(data["cell-size"]*col, data["cell-size"]*row, data["cell-size"]*(col+1), data["cell-size"]*(row+1), fill="yellow")
+            else:
+                canvas.create_rectangle(data["cell-size"]*col, data["cell-size"]*row, data["cell-size"]*(col+1), data["cell-size"]*(row+1), fill="blue")
+
     return
 
 
