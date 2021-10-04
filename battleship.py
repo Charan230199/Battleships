@@ -30,10 +30,12 @@ def makeModel(data):
     data["board-size"]=500
     data["cell-size"]= data["board-size"]/data["rows"]                              
     data["Number of ships"]=5
-    User= test.testGrid()                                                          
-    data["User-board"] =User
+    # User= test.testGrid()                                                          
+    data["User-board"] =emptyGrid(data["rows"], data["cols"])
     data["computer"] = emptyGrid(data["rows"], data["cols"])                        
     addShips(data["computer"], data["Number of ships"])
+    data["temp_boat"]= []
+    data["user_track"]=0
     return
 
 
@@ -43,7 +45,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
-    userCanvas = drawGrid(data, userCanvas, data["User-board"], True)
+    userCanva = drawGrid(data, userCanvas, data["User-board"], True)
+    empty = drawShip(data, userCanvas, data["temp_boat"])
     compCanvas = drawGrid(data, compCanvas, data["computer"], True)
     return
 
@@ -63,7 +66,10 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
-    pass
+    # mouse_event = getClickedCell(data,event)
+    # if board == "user":
+    #     clickUserBoard(data,mouse_event[0],mouse_event[1])
+    return
 
 #### WEEK 1 ####
 
@@ -164,7 +170,12 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    ship.sort()
+    if ship[0][1] == ship[1][1] == ship[2][1]:
+        if (ship[1][0]-ship[0][0]) and (ship[2][0]-ship[1][0]) == EMPTY_UNCLICKED:
+            return True
+    return False
+
 
 
 '''
@@ -209,7 +220,9 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+  
     return
+
 
 
 '''
@@ -218,6 +231,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
+   
     return
 
 
@@ -325,5 +339,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-   # runSimulation(500, 500)
-   test.testAddShips()
+#    runSimulation(500, 500)
+   test.testIsVertical()
