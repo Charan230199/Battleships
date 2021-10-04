@@ -207,6 +207,8 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for i in range(len(ship)):
+       canvas.create_rectangle(data["cell-size"]*(ship[i][1]), data["cell-size"]*(ship[i][0]), data["cell-size"]*(ship[i][1]+1), data["cell-size"]*(ship[i][0]+1), fill="white")
     return
 
 
