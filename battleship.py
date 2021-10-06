@@ -306,7 +306,7 @@ Returns: list of ints
 def getComputerGuess(board):
     row = random.randint(0,9)
     col = random.randint(0,9)
-    print(row,col)
+    # print(row,col)
     while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED:
         row = random.randint(0,9)
         col = random.randint(0,9)
