@@ -69,7 +69,7 @@ def mousePressed(data, event, board):
     mouse_event = getClickedCell(data,event)
     if board == "user":
         clickUserBoard(data,mouse_event[0],mouse_event[1])
-    elif board == "comp":
+    else:
         runGameTurn(data,mouse_event[0],mouse_event[1])
     return
 
@@ -293,6 +293,8 @@ def runGameTurn(data, row, col):
         return
     else:
         updateBoard(data,data["computer"],row,col,"user")
+    x = getComputerGuess(data["User-board"])
+    updateBoard(data,data["User-board"],x[0],x[1],"comp")
     return
 
 
@@ -302,14 +304,14 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    # row = random.radint()
-    # col = random.radint()
-    # # print(row,col)
-    # while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED:
-    #     row = random.radint()
-    #     col = random.radint()
-    # if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED:
-        return
+    row = random.randint(0,9)
+    col = random.randint(0,9)
+    print(row,col)
+    while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED:
+        row = random.randint(0,9)
+        col = random.randint(0,9)
+    if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED:
+        return(row,col)
 
 
 '''
