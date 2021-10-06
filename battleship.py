@@ -45,9 +45,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
-    userCanva = drawGrid(data, userCanvas, data["User-board"], True)
-    empty = drawShip(data, userCanvas, data["temp_boat"])
-    compCanvas = drawGrid(data, compCanvas, data["computer"], True)
+    drawGrid(data, userCanvas, data["User-board"], True)
+    drawShip(data, userCanvas, data["temp_boat"])
+    drawGrid(data, compCanvas, data["computer"], False)
     return
 
 
@@ -69,6 +69,8 @@ def mousePressed(data, event, board):
     mouse_event = getClickedCell(data,event)
     if board == "user":
         clickUserBoard(data,mouse_event[0],mouse_event[1])
+    elif board == "comp":
+        runGameTurn(data,mouse_event[0],mouse_event[1])
     return
 
 #### WEEK 1 ####
@@ -152,13 +154,19 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
+    x=data["cell-size"]
     for row in range(data["rows"]):
         for col in range(data["cols"]):
             if grid[row][col] == SHIP_UNCLICKED:
-                canvas.create_rectangle(data["cell-size"]*col, data["cell-size"]*row, data["cell-size"]*(col+1), data["cell-size"]*(row+1), fill="yellow")
-            else:
-                canvas.create_rectangle(data["cell-size"]*col, data["cell-size"]*row, data["cell-size"]*(col+1), data["cell-size"]*(row+1), fill="blue")
-
+                canvas.create_rectangle(x*col, x*row, x*(col+1), x*(row+1), fill="yellow")
+            elif grid[row][col] == EMPTY_UNCLICKED:
+                canvas.create_rectangle(x*col, x*row, x*(col+1), x*(row+1), fill="blue")
+            elif grid[row][col] == SHIP_CLICKED:
+                canvas.create_rectangle(x*col,x*row,x*(col+1),x*(row+1), fill="red")
+            elif grid[row][col] == EMPTY_CLICKED:
+                canvas.create_rectangle(x*col,x*row,x*(col+1),x*(row+1),fill="white")
+            if grid[row][col] == SHIP_UNCLICKED and showShips==False:
+                canvas.create_rectangle(x*col,x*row,x*(col+1),x*(row+1),fill="blue")
     return
 
 
@@ -266,6 +274,12 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
+    x= board[row][col]
+    if x == SHIP_UNCLICKED:
+        x = SHIP_CLICKED
+    elif x == EMPTY_UNCLICKED:
+        x = EMPTY_CLICKED
+    board[row][col] =x 
     return
 
 
@@ -275,6 +289,10 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
+    if data["computer"][row][col] == SHIP_CLICKED or data["computer"][row][col] == EMPTY_CLICKED:
+        return
+    else:
+        updateBoard(data,data["computer"],row,col,"user")
     return
 
 
@@ -284,7 +302,14 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    return
+    # row = random.radint()
+    # col = random.radint()
+    # # print(row,col)
+    # while board[row][col] == SHIP_CLICKED or board[row][col] == EMPTY_CLICKED:
+    #     row = random.radint()
+    #     col = random.radint()
+    # if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED:
+        return
 
 
 '''
@@ -302,6 +327,7 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+   
     return
 
 
@@ -362,5 +388,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-#    runSimulation(500, 500)
-   test.testIsVertical()
+     runSimulation(500, 500)
+    # test.testGetComputerGuess()
