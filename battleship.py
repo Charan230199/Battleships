@@ -36,6 +36,7 @@ def makeModel(data):
     addShips(data["computer"], data["Number of ships"])
     data["temp_boat"]= []
     data["user_track"]=0
+    data["winner"]=None
     return
 
 
@@ -48,6 +49,7 @@ def makeView(data, userCanvas, compCanvas):
     drawGrid(data, userCanvas, data["User-board"], True)
     drawShip(data, userCanvas, data["temp_boat"])
     drawGrid(data, compCanvas, data["computer"], False)
+    drawGameOver(data,userCanvas)
     return
 
 
@@ -67,6 +69,8 @@ Returns: None
 '''
 def mousePressed(data, event, board):
     mouse_event = getClickedCell(data,event)
+    if data["winner"] != None:
+        return
     if board == "user":
         clickUserBoard(data,mouse_event[0],mouse_event[1])
     else:
@@ -279,7 +283,9 @@ def updateBoard(data, board, row, col, player):
         x = SHIP_CLICKED
     elif x == EMPTY_UNCLICKED:
         x = EMPTY_CLICKED
-    board[row][col] =x 
+    board[row][col] =x
+    if isGameOver(board):
+        data["winner"] = player
     return
 
 
@@ -311,7 +317,7 @@ def getComputerGuess(board):
         row = random.randint(0,9)
         col = random.randint(0,9)
     if board[row][col] == SHIP_UNCLICKED or board[row][col] == EMPTY_UNCLICKED:
-        return(row,col)
+        return[row,col]
 
 
 '''
@@ -320,7 +326,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
-    return
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if board[row][col] == SHIP_UNCLICKED:
+                return False
+    return True
 
 
 '''
@@ -329,7 +339,10 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
-   
+    if data["winner"] == "user":
+        canvas.create_text(250, 250, text="Congratulations", fill="black", font=('Helvetica 30 bold'))
+    elif data["winner"] == "comp":
+        canvas.create_text(250, 250, text="You lost", fill="black", font=('Helvetica 30 bold'))
     return
 
 
@@ -391,4 +404,4 @@ if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
      runSimulation(500, 500)
-    # test.testGetComputerGuess()
+    # test.testIsGameOver()
