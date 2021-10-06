@@ -37,6 +37,8 @@ def makeModel(data):
     data["temp_boat"]= []
     data["user_track"]=0
     data["winner"]=None
+    data["max_number"] =50
+    data["current_number"]=0
     return
 
 
@@ -301,6 +303,9 @@ def runGameTurn(data, row, col):
         updateBoard(data,data["computer"],row,col,"user")
     x = getComputerGuess(data["User-board"])
     updateBoard(data,data["User-board"],x[0],x[1],"comp")
+    data["curren_number"]+=1
+    if data["max_number"]==data["current_number"]:
+        data["winner"] = "Draw"
     return
 
 
@@ -343,6 +348,8 @@ def drawGameOver(data, canvas):
         canvas.create_text(250, 250, text="Congratulations", fill="black", font=('Helvetica 30 bold'))
     elif data["winner"] == "comp":
         canvas.create_text(250, 250, text="You lost", fill="black", font=('Helvetica 30 bold'))
+    elif data["winner"] == "Draw":
+        canvas.create_text(250, 250, text="It's a Draw", fill="black", font=('Helvetica 30 bold'))
     return
 
 
